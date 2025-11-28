@@ -1,0 +1,86 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# Environment variables
+.env
+.env.local
+
+# AWS credentials (NEVER commit these!)
+.aws/
+credentials
+config
+
+# Data files (too large for git)
+*.csv
+*.parquet
+*.pkl
+*.h5
+*.hdf5
+*.joblib
+data/
+!data/.gitkeep
+
+# Results and outputs
+results/
+visualizations/*.png
+visualizations/*.jpg
+visualizations/*.pdf
+visualizations/*.txt
+!visualizations/.gitkeep
+
+# ML models (too large)
+ml_models/*.pkl
+ml_models/*.h5
+ml_models/*.joblib
+!ml_models/*.py
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp

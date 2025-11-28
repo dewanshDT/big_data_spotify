@@ -1,0 +1,33 @@
+# Core AWS
+boto3==1.34.25
+awscli==1.32.25
+
+# Data Processing
+pandas==2.1.4
+numpy==1.26.2
+
+# Visualization
+matplotlib==3.8.2
+seaborn==0.13.0
+plotly==5.18.0
+
+# Machine Learning
+scikit-learn==1.3.2
+xgboost==2.0.3
+
+# Utilities
+pyyaml==6.0.1
+tqdm==4.66.1
+python-dotenv==1.0.0
+
+# Jupyter (for interactive analysis)
+jupyter==1.0.0
+jupyterlab==4.0.9
+ipywidgets==8.1.1
+
+# Optional: For very large data (if needed)
+# pyspark==3.5.0
+# pyarrow==14.0.1
+
+
+

@@ -1,0 +1,48 @@
+# Simple AWS Configuration
+
+aws:
+  region: us-east-1
+  # Add your bucket name after creating it
+  s3_bucket: spotify-data-analysis-bucket
+
+# S3 paths
+s3_paths:
+  raw_data: raw/spotify_data.csv
+  processed_data: processed/
+  results: results/
+  models: models/
+  visualizations: visualizations/
+
+# EC2 (reference only - launch via console or CLI)
+ec2:
+  instance_type: m5.4xlarge  # 16 vCPU, 64 GB RAM
+  storage_gb: 100
+  ami: Ubuntu 22.04 LTS
+
+# Data processing
+processing:
+  chunk_size: 100000  # Rows per chunk for memory-efficient processing
+  test_sample_size: 10000  # For quick testing
+
+# ML Model parameters
+ml_models:
+  random_state: 42
+  test_size: 0.2
+  
+  popularity_prediction:
+    model_type: xgboost
+    max_depth: 6
+    n_estimators: 100
+  
+  recommendation:
+    n_clusters: 50
+    n_recommendations: 10
+
+# Visualization settings
+visualization:
+  figure_size: [12, 8]
+  dpi: 300
+  style: seaborn
+
+
+
