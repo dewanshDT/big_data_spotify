@@ -1,13 +1,12 @@
 # Simple AWS Configuration
 
 aws:
-  region: us-east-1
-  # Add your bucket name after creating it
-  s3_bucket: spotify-data-analysis-bucket
+  region: eu-north-1
+  s3_bucket: bigdata-spotifyproject-1
 
 # S3 paths
 s3_paths:
-  raw_data: raw/spotify_data.csv
+  raw_data: data/spotify_data.csv
   processed_data: processed/
   results: results/
   models: models/

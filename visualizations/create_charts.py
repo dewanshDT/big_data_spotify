@@ -5,6 +5,8 @@ Generates charts, graphs, and dashboards
 
 import pandas as pd
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')  # CRITICAL: Use non-interactive backend for EC2!
 import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
@@ -24,15 +26,21 @@ def load_config():
         return yaml.safe_load(f)
 
 def load_data(file_path):
-    """Load processed data"""
+    """Load processed data (prefer parquet)"""
     file_path = Path(file_path)
     parquet_path = file_path.with_suffix('.parquet')
     
     print(f"\n📂 Loading data...")
+    
+    # Try parquet first (faster!)
     if parquet_path.exists():
+        print(f"   Loading from parquet: {parquet_path}")
         df = pd.read_parquet(parquet_path)
-    else:
+    elif file_path.exists():
+        print(f"   Loading from CSV: {file_path}")
         df = pd.read_csv(file_path)
+    else:
+        raise FileNotFoundError(f"Data file not found: {file_path} or {parquet_path}")
     
     print(f"✅ Loaded {len(df):,} rows")
     return df
@@ -334,6 +342,12 @@ def create_summary_report(df, output_dir):
     print("\n" + report_text)
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--sample', type=int, default=1000000, 
+                       help='Number of rows to sample (default: 1M)')
+    args = parser.parse_args()
+    
     print("="*60)
     print("Spotify Data Visualization Generator")
     print("="*60)
@@ -341,22 +355,55 @@ def main():
     # Load config
     config = load_config()
     
-    # Load data
-    data_path = Path('../data/processed/spotify_features.csv')
+    # Load data (use absolute path from project root)
+    data_path = Path(__file__).parent.parent / 'data/processed/spotify_features.csv'
     df = load_data(data_path)
+    
+    # Sample for faster visualization
+    if args.sample and args.sample < len(df):
+        print(f"\n🎲 Sampling {args.sample:,} rows from {len(df):,} for visualization")
+        df = df.sample(n=args.sample, random_state=42)
+        print(f"✅ Using {len(df):,} rows for charts")
     
     # Create output directory
     output_dir = Path('../visualizations')
     output_dir.mkdir(parents=True, exist_ok=True)
     
-    # Generate all visualizations
-    create_audio_features_dashboard(df, output_dir)
-    create_correlation_heatmap(df, output_dir)
-    create_popularity_analysis(df, output_dir)
-    create_temporal_trends(df, output_dir)
-    create_category_comparison(df, output_dir)
-    create_top_artists_chart(df, output_dir)
-    create_summary_report(df, output_dir)
+    # Generate all visualizations (with error handling)
+    try:
+        create_audio_features_dashboard(df, output_dir)
+    except Exception as e:
+        print(f"   ⚠️  Error creating dashboard: {e}")
+    
+    try:
+        create_correlation_heatmap(df, output_dir)
+    except Exception as e:
+        print(f"   ⚠️  Error creating heatmap: {e}")
+    
+    try:
+        create_popularity_analysis(df, output_dir)
+    except Exception as e:
+        print(f"   ⚠️  Skipping popularity analysis: {e}")
+    
+    try:
+        create_temporal_trends(df, output_dir)
+    except Exception as e:
+        print(f"   ⚠️  Skipping temporal trends: {e}")
+    
+    try:
+        create_category_comparison(df, output_dir)
+    except Exception as e:
+        print(f"   ⚠️  Error creating category comparison: {e}")
+    
+    try:
+        create_top_artists_chart(df, output_dir)
+    except Exception as e:
+        print(f"   ⚠️  Error creating top artists: {e}")
+    
+    try:
+        create_summary_report(df, output_dir)
+    except Exception as e:
+        print(f"   ⚠️  Error creating summary: {e}")
     
     print("\n" + "="*60)
     print("✅ All Visualizations Complete!")

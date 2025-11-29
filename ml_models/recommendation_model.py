@@ -19,15 +19,21 @@ def load_config():
         return yaml.safe_load(f)
 
 def load_data(file_path):
-    """Load feature-engineered data"""
+    """Load feature-engineered data (prefer parquet)"""
     file_path = Path(file_path)
     parquet_path = file_path.with_suffix('.parquet')
     
     print(f"\n📂 Loading data...")
+    
+    # Try parquet first (faster!)
     if parquet_path.exists():
+        print(f"   Loading from parquet: {parquet_path}")
         df = pd.read_parquet(parquet_path)
-    else:
+    elif file_path.exists():
+        print(f"   Loading from CSV: {file_path}")
         df = pd.read_csv(file_path)
+    else:
+        raise FileNotFoundError(f"Data file not found: {file_path} or {parquet_path}")
     
     print(f"✅ Loaded {len(df):,} rows")
     return df
@@ -172,6 +178,12 @@ def save_recommendation_system(kmeans, scaler, feature_cols, df, clusters):
     print(f"✅ Metadata saved to: {metadata_path}")
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--sample', type=int, default=5000000, 
+                       help='Number of rows to sample (default: 5M)')
+    args = parser.parse_args()
+    
     print("="*60)
     print("Spotify Music Recommendation System")
     print("="*60)
@@ -182,6 +194,12 @@ def main():
     # Load data
     data_path = '../data/processed/spotify_features.csv'
     df = load_data(data_path)
+    
+    # Sample for memory efficiency
+    if args.sample and args.sample < len(df):
+        print(f"\n🎲 Sampling {args.sample:,} rows from {len(df):,} (for memory efficiency)")
+        df = df.sample(n=args.sample, random_state=42)
+        print(f"✅ Using {len(df):,} rows for recommendations")
     
     # Prepare features
     X, feature_cols = prepare_features(df)

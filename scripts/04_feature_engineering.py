@@ -97,24 +97,27 @@ def create_features(df):
         print("\n6. Creating follower-based features...")
         df['high_follower_playlist'] = (df['num_followers'] > df['num_followers'].median()).astype(int)
     
-    # 8. Artist/Track features (aggregations)
-    if 'artist_name' in df.columns:
-        print("\n7. Creating artist-level features...")
-        pop_col = 'popularity_score' if 'popularity_score' in df.columns else 'popularity'
-        if pop_col in df.columns:
-            artist_stats = df.groupby('artist_name').agg({
-                pop_col: 'mean',
-                'track_name': 'count'
-            }).rename(columns={pop_col: 'artist_avg_popularity',
-                              'track_name': 'artist_track_count'})
-            df = df.merge(artist_stats, on='artist_name', how='left')
+    # 8. Artist/Track features (aggregations) - SKIP FOR LARGE DATASETS
+    # This requires too much memory for 62M rows
+    # if 'artist_name' in df.columns:
+    #     print("\n7. Creating artist-level features...")
+    #     pop_col = 'popularity_score' if 'popularity_score' in df.columns else 'popularity'
+    #     if pop_col in df.columns:
+    #         artist_stats = df.groupby('artist_name').agg({
+    #             pop_col: 'mean',
+    #             'track_name': 'count'
+    #         }).rename(columns={pop_col: 'artist_avg_popularity',
+    #                           'track_name': 'artist_track_count'})
+    #         df = df.merge(artist_stats, on='artist_name', how='left')
+    print("\n7. Skipping artist-level features (too memory intensive for 62M rows)")
     
-    # 9. Playlist category features (if available)
-    if 'playlist_category' in df.columns:
-        print("\n8. Creating playlist category features...")
-        # One-hot encode playlist categories
-        category_dummies = pd.get_dummies(df['playlist_category'], prefix='category')
-        df = pd.concat([df, category_dummies], axis=1)
+    # 9. Playlist category features (if available)  
+    # SKIP: One-hot encoding 62M rows creates too many columns
+    # if 'playlist_category' in df.columns:
+    #     print("\n8. Creating playlist category features...")
+    #     category_dummies = pd.get_dummies(df['playlist_category'], prefix='category')
+    #     df = pd.concat([df, category_dummies], axis=1)
+    print("\n8. Skipping one-hot encoding (too memory intensive)")
     
     print(f"\n✅ Feature engineering complete!")
     print(f"   Original columns: {df.shape[1] - 20}")  # Approximate
@@ -124,18 +127,18 @@ def create_features(df):
 
 def save_features(df, output_path):
     """Save data with engineered features"""
-    print(f"\n💾 Saving feature-engineered data to: {output_path}")
+    print(f"\n💾 Saving feature-engineered data...")
     
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     
-    # Save as both CSV and Parquet
-    df.to_csv(output_path, index=False)
+    # Save ONLY Parquet (CSV too slow for 62M rows!)
     parquet_path = output_path.with_suffix('.parquet')
+    print(f"   Writing to: {parquet_path}")
     df.to_parquet(parquet_path, index=False)
     
-    print(f"✅ Saved as CSV: {output_path}")
     print(f"✅ Saved as Parquet: {parquet_path}")
+    print(f"   (Skipped CSV - too slow for this size, use parquet!)")
 
 def main():
     parser = argparse.ArgumentParser(description='Feature engineering for Spotify data')
