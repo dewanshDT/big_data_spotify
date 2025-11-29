@@ -184,6 +184,8 @@ def main():
                        help='Output CSV file')
     parser.add_argument('--sample', type=int, default=None,
                        help='Use sample of N rows for testing')
+    parser.add_argument('--chunk-size', type=int, default=None,
+                       help='Process in chunks of N rows (for memory efficiency)')
     parser.add_argument('--explore', action='store_true',
                        help='Show data exploration before cleaning')
     
@@ -194,18 +196,33 @@ def main():
     print("=" * 60)
     
     # Load data
-    df = load_data(args.input, sample_size=args.sample)
+    if args.chunk_size:
+        print(f"\n⚙️  Using chunked processing (chunk size: {args.chunk_size:,} rows)")
+        print("   This will take longer but use less memory")
     
-    # Explore if requested
-    if args.explore:
-        explore_data(df)
-        response = input("\nContinue with cleaning? (y/n): ")
-        if response.lower() != 'y':
-            print("Aborted.")
-            sys.exit(0)
+    df = load_data(args.input, sample_size=args.sample, chunk_size=args.chunk_size)
     
-    # Clean data
-    df_cleaned = clean_data(df)
+    # Handle chunked processing
+    if args.chunk_size and hasattr(df, '__iter__') and not isinstance(df, pd.DataFrame):
+        print("\n⚙️  Processing in chunks...")
+        chunks_cleaned = []
+        for i, chunk in enumerate(df):
+            print(f"\nProcessing chunk {i+1}...")
+            chunk_cleaned = clean_data(chunk)
+            chunks_cleaned.append(chunk_cleaned)
+        df_cleaned = pd.concat(chunks_cleaned, ignore_index=True)
+        print(f"\n✅ Concatenated {len(chunks_cleaned)} chunks")
+    else:
+        # Explore if requested
+        if args.explore:
+            explore_data(df)
+            response = input("\nContinue with cleaning? (y/n): ")
+            if response.lower() != 'y':
+                print("Aborted.")
+                sys.exit(0)
+        
+        # Clean data
+        df_cleaned = clean_data(df)
     
     # Save cleaned data
     save_cleaned_data(df_cleaned, args.output)
