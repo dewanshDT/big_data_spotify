@@ -1,0 +1,16 @@
+======================================================================
+SPOTIFY DATA ANALYSIS - SUMMARY REPORT
+======================================================================
+
+1. DATASET OVERVIEW
+   Total Tracks: 100,000
+   Unique Artists: 15,773
+   Unique Albums: 27,678
+
+2. AVERAGE AUDIO FEATURES
+   Energy: 0.499
+   Danceability: 0.501
+   Valence: 0.499
+   Tempo: 119.930
+
+======================================================================

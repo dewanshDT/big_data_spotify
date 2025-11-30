@@ -1,0 +1,27 @@
+Pipeline Execution Summary
+================================================================================
+
+Start time: 2025-11-29 10:30:28
+End time: 2025-11-29 10:40:50
+Duration: 0h 10m 21s
+
+Steps completed: 3
+Steps failed: 3
+
+✅ Completed Steps:
+  - Step 2: Data Cleaning & Preprocessing (560.6s)
+  - Step 3: Feature Engineering (35.5s)
+  - Step 7: Upload Results to S3 (0.2s)
+
+❌ Failed Steps:
+  - Step 4: Exploratory Analysis & Visualizations: 1
+  - Step 5: ML - Popularity Prediction Model: 1
+  - Step 6: ML - Recommendation System: 1
+
+================================================================================
+
+💡 TROUBLESHOOTING RECOMMENDATIONS:
+
+- Visualization failed: Check matplotlib backend and data availability
+- Step 5: ML - Popularity Prediction Model failed: Check memory, reduce sample size
+- Step 6: ML - Recommendation System failed: Check memory, reduce sample size

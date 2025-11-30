@@ -1,0 +1,58 @@
+================================================================================
+📊 SPOTIFY DATASET - SIMPLE STATISTICS SUMMARY
+================================================================================
+
+📈 DATASET SIZE
+   Total Tracks: 1,000,000
+   Unique Artists: 49,902
+   Most Featured Artist: Drake Swift (25,868 tracks)
+   Unique Albums: 49,928
+   Playlist Categories: 9
+
+🎵 TRACKS PER CATEGORY
+   chill          :  180,244 tracks ( 18.0%)
+   party          :  149,640 tracks ( 15.0%)
+   focus          :  139,870 tracks ( 14.0%)
+   study          :  120,267 tracks ( 12.0%)
+   workout        :  119,085 tracks ( 11.9%)
+   pop            :  100,436 tracks ( 10.0%)
+   sleep          :   79,729 tracks (  8.0%)
+   rock           :   60,382 tracks (  6.0%)
+   indie          :   50,347 tracks (  5.0%)
+
+🎯 AUDIO FEATURE AVERAGES
+   energy            :  0.529 (±0.238)  [range: 0.000 - 1.000]
+   danceability      :  0.550 (±0.205)  [range: 0.003 - 1.000]
+   valence           :  0.526 (±0.173)  [range: 0.017 - 1.000]
+   tempo             : 119.775 (±29.219)  [range: 40.000 - 220.000]
+   acousticness      :  0.423 (±0.172)  [range: 0.004 - 1.000]
+   loudness          : -29.424 (±12.021)  [range: -60.000 - 0.000]
+   speechiness       :  0.100 (±0.099)  [range: 0.000 - 0.796]
+   instrumentalness  :  0.091 (±0.083)  [range: 0.000 - 0.734]
+   liveness          :  0.167 (±0.130)  [range: 0.000 - 0.882]
+
+⭐ POPULARITY BREAKDOWN
+   Average: 50.0
+   Median: 50.0
+   Unpopular (<30): 0 tracks (0.0%)
+   Moderate (30-70): 1,000,000 tracks (100.0%)
+   Popular (70+): 0 tracks (0.0%)
+
+📅 RELEASE YEAR DISTRIBUTION
+   Earliest: 2010
+   Latest: 2023
+   Peak year: 2023 (137,439 tracks)
+
+🎤 TOP 10 ARTISTS (BY TRACK COUNT)
+    1. Drake Swift               → 25,868 tracks
+    2. Taylor Swift              → 14,648 tracks
+    3. Ed Swift                  → 10,651 tracks
+    4. Ariana Swift              →  8,420 tracks
+    5. Post Swift                →  7,181 tracks
+    6. Billie Swift              →  6,217 tracks
+    7. The Weeknd Swift          →  5,390 tracks
+    8. Justin Swift              →  4,998 tracks
+    9. Dua Swift                 →  4,326 tracks
+   10. Bad Swift                 →  4,017 tracks
+
+================================================================================
